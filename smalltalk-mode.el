@@ -102,12 +102,6 @@
     table)
   "Syntax table used by Smalltalk mode.")
 
-;; ---[ Abbrev table ]------------------------------------------------
-
-(defvar smalltalk-mode-abbrev-table nil
-  "Abbrev table in use in `smalltalk-mode' buffers.")
-(define-abbrev-table 'smalltalk-mode-abbrev-table ())
-
 ;; ---[ Keymap ]------------------------------------------------------
 
 (defvar smalltalk-template-map
@@ -181,22 +175,12 @@
 ;; ---[ Interactive functions ]---------------------------------------
 
 ;;;###autoload
-(defun smalltalk-mode ()
+(define-derived-mode smalltalk-mode prog-mode "Smalltalk"
   "Major mode for editing Smalltalk code.
 
 Commands:
 \\{smalltalk-mode-map}"
-  (interactive)
-  (kill-all-local-variables)
-  (setq major-mode 'smalltalk-mode)
-  (setq mode-name "Smalltalk")
-
-  (use-local-map smalltalk-mode-map)
-  (set-syntax-table smalltalk-mode-syntax-table)
-  (setq local-abbrev-table smalltalk-mode-abbrev-table)
-  
   ;; Buffer locals
-
   (set (make-local-variable 'paragraph-start)
        (concat "^$\\|" page-delimiter))
   (set (make-local-variable 'paragraph-separate)
@@ -224,9 +208,7 @@ Commands:
 
   ;; tags
   (set (make-local-variable 'find-tag-default-function)
-       'smalltalk-find-message)
-  ;; Run hooks, must be last
-  (run-hooks 'smalltalk-mode-hook))
+       'smalltalk-find-message))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.st\\'" . smalltalk-mode))
